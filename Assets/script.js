@@ -9,14 +9,13 @@ let formSubmitHandler = function (event) {
   event.preventDefault();
 
   let cityName = cityNameEl.value.trim();
-  console.log(typeof cityName)
+  console.log(cityName)
   if (cityName) {
     apiCall(cityName);
 
     cityNameEl.textContent = '';
-
   } else {
-    alert('Please enter a GitHub username');
+    alert('Please enter a valid city');
   }
 };
 function apiCall(cityName) {
@@ -25,15 +24,13 @@ function apiCall(cityName) {
     'http://api.openweathermap.org/geo/1.0/direct?q=' +
     cityName +
     '&limit=2&appid=' + apiKey;
-  // let apiUrl =
-// 	'api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey;
-  // console.log(cityName)
+  
   fetch(geoUrl)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data[0].lat)
+
       getWeather(data,apiKey)
     })
 }
@@ -48,8 +45,13 @@ let apiUrl =
   })
   .then(function(data){
     console.log(data)
+    
     return data
   })
+  for (let i = 0; i < data.length; i ++) {
+    const element = data[i];
+    console.log(element);
+  }
 }
 
 cityFormEl.addEventListener('submit', formSubmitHandler)
