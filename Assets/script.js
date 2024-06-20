@@ -4,7 +4,12 @@ const currentWeatherEl = document.querySelector('#current-weather-info');
 const forecastEl = document.querySelector('#forecast-container');
 const cityNameEl = document.querySelector('#city-input');
 const cityFormEl = document.querySelector('#city-form')
-
+const currentCityWeatherEl = document.querySelector('.city-name')
+const currentCityDateEl = document.querySelector('.date');
+const currentCityWeatherIconEl = document.querySelector('.weather-icon');
+const currentCityTemperatureEl = document.querySelector('.temperature');
+const currentCityHumidityEl = document.querySelector('.humidity');
+const currentCityWindSpeedEl = document.querySelector('.wind-speed');
 let formSubmitHandler = function (event) {
   event.preventDefault();
 
@@ -12,7 +17,6 @@ let formSubmitHandler = function (event) {
   console.log(cityName)
   if (cityName) {
     apiCall(cityName);
-
     cityNameEl.textContent = '';
   } else {
     alert('Please enter a valid city');
@@ -44,14 +48,22 @@ let apiUrl =
     return response.json();
   })
   .then(function(data){
-    console.log(data)
-    
-    return data
+    getForecast(data)
   })
-  for (let i = 0; i < data.length; i ++) {
-    const element = data[i];
-    console.log(element);
-  }
+
+  
 }
+function getForecast(data){
+console.log(data)
+let forecast = data.list
+let currentForecast = forecast[0]
+console.log(currentForecast)
+console.log(forecast)
+for (let i = 0; i < forecast.length; i+= 8) {
+  const element = forecast[i];
+  console.log(element)
+}
+}
+
 
 cityFormEl.addEventListener('submit', formSubmitHandler)
