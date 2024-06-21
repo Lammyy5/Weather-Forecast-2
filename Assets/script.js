@@ -16,13 +16,16 @@ let formSubmitHandler = function (event) {
 
 	let cityName = cityNameEl.value.trim();
 	console.log(cityName);
+	JSON.stringify(localStorage.setItem('city', cityName));
 	if (cityName) {
 		apiCall(cityName);
+		searchHistory();
 		cityNameEl.textContent = '';
 	} else {
 		alert('Please enter a valid city');
 	}
 };
+
 function apiCall(cityName) {
 	let apiKey = 'cc20c2bbfb885577a8885d75622aaae4';
 	let geoUrl =
@@ -38,6 +41,32 @@ function apiCall(cityName) {
 		.then(function (data) {
 			getWeather(data, apiKey);
 		});
+}
+function searchHistory() {
+	let searchedCities = Array.of(localStorage.getItem('city')) || [];
+	let cities = []
+  cities.push(searchedCities)
+  
+  let cityHistory = Array.of(searchedCities)
+  console.log(cities);
+	searchHistoryEl.innerHTML = '';
+	for (let i = 0; i < searchedCities.length; i++) {
+		const list = document.createElement('li');
+		const city = searchedCities[i];
+		let searchHistorybtn = document.createElement('button');
+		searchHistorybtn.textContent = city;
+		searchHistorybtn.classList.add('search-history-button');
+		list.appendChild(searchHistorybtn);
+		searchHistorybtn.addEventListener('click', function () {
+			apiCall(city);
+		});
+		searchHistoryEl.appendChild(list);
+	}
+	// cityName.forEach(searchedCities => {
+	//  let searchHistorybtn = document.createElement('button');
+	//  searchHistorybtn.innerHTML = cityName
+	//  searchHistoryEl.appendChild(searchHistorybtn)
+	// });
 }
 function getWeather(data, apiKey) {
 	let lat = data[0].lat;
@@ -56,7 +85,7 @@ function getWeather(data, apiKey) {
 		})
 		.then(function (data) {
 			getForecast(data);
-      getWeekForecast(data);
+			getWeekForecast(data);
 		});
 }
 function getForecast(data) {
@@ -72,22 +101,34 @@ function getForecast(data) {
 		'Temperature:' + currentForecast.main.temp + '°F';
 	currentCityHumidityEl.textContent =
 		'Humidity: ' + currentForecast.main.humidity + '%';
-    currentCityWindSpeedEl.textContent = 'wind:' + currentForecast.wind.speed + 'mph';
+	currentCityWindSpeedEl.textContent =
+		'wind:' + currentForecast.wind.speed + 'mph';
 	// currentCityWeatherIconEl.appendChild()
 	console.log(forecast);
 	console.log(currentForecast.wind.speed);
 	// console.log(forecast)
 }
 
-function getWeekForecast(data){
-  console.log(data)
-  	let forecast = data.list;
-  for (let i = 0; i < forecast.length; i += 8) {
-    const element = forecast[i];
-    console.log(element)
-let weekForecast = document.createElement('div');
-// todo
-  }
+function getWeekForecast(data) {
+	console.log(data);
+	forecastEl.innerHTML = '';
+	let forecast = data.list;
+	for (let i = 0; i < forecast.length; i += 8) {
+		const element = forecast[i];
+		console.log(element);
+		let icon = element.weather[0].icon;
+		let iconUrl = 'https://openweathermap.org/img/w/' + icon + '.png';
+		let weekForecast = document.createElement('div');
+		weekForecast.innerHTML = `<div class="forecast-card">
+    <img class="weather-icon" src="${iconUrl}" alt="Weather icon">
+                    <h3 class="date">${element.dt_txt}</h3>
+                    <h3 class="temperature">Temp: ${element.main.temp}°F</h3>
+                    <h3 class="humidity">Humidty: ${element.main.humidity}</h3>
+                </div>`;
+		weekForecast.setAttribute('class', 'forecast-day');
+		forecastEl.appendChild(weekForecast);
+		// todo
+	}
 }
 
 cityFormEl.addEventListener('submit', formSubmitHandler);

@@ -68,12 +68,11 @@ button:hover {
     color: grey;
     background-color: grey;
 }
-.weather{
-   max-width: max-content;
-}
+
 #current-weather{
     border: #333;
     border-style: solid;
+    width: 100%;
 }
 
 .search-history, .weather, .forecast {
@@ -96,29 +95,43 @@ button:hover {
 }
 
 .weather-icon {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
 }
 
 .weather p, .forecast-day p {
     margin: 5px 0;
 }
 
-.forecast-day {
-    display: inline-block;
-    width: 150px;
-    text-align: center;
-    background-color: #f8f9fa;
-    margin-right: 10px;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-.forecast-day:last-child {
-    margin-right: 0;
-}
 
 .forecast-day .weather-icon {
     width: 50px;
     height: 50px;
+}
+#forecast-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.forecast-day {
+    border: 1px solid #000; /* Change the color as needed */
+    box-sizing: border-box; /* This makes sure the border is included in the element's total width and height */
+    flex: 1 0 18%; /* This makes sure the items take up equal width */
+    margin: 0.5%; /* This gives a little space between the items */
+    background-color: blue;
+    color: white;
+}
+#history-list .search-history-button {
+    background-color: gray;
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 100%; /* This will make the button fit the width of the history-list */
+    box-sizing: border-box; /* This ensures padding and border are included in the element's total width */
 }
