@@ -10,7 +10,7 @@ const currentCityWeatherIconEl = document.querySelector('.weather-icon');
 const currentCityTemperatureEl = document.querySelector('.temperature');
 const currentCityHumidityEl = document.querySelector('.humidity');
 const currentCityWindSpeedEl = document.querySelector('.wind-speed');
-
+let weekForecast = {};
 let formSubmitHandler = function (event) {
 	event.preventDefault();
 
@@ -56,9 +56,10 @@ function getWeather(data, apiKey) {
 		})
 		.then(function (data) {
 			getForecast(data);
+      getWeekForecast(data);
 		});
 }
-function getForecast(data, img) {
+function getForecast(data) {
 	console.log(data);
 	let forecast = data.list;
 	let currentForecast = forecast[0];
@@ -76,10 +77,17 @@ function getForecast(data, img) {
 	console.log(forecast);
 	console.log(currentForecast.wind.speed);
 	// console.log(forecast)
-	for (let i = 0; i < forecast.length; i += 8) {
-		const element = forecast[i];
-		// console.log(element)
-	}
+}
+
+function getWeekForecast(data){
+  console.log(data)
+  	let forecast = data.list;
+  for (let i = 0; i < forecast.length; i += 8) {
+    const element = forecast[i];
+    console.log(element)
+let weekForecast = document.createElement('div');
+// todo
+  }
 }
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
